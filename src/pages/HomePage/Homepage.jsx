@@ -2,80 +2,88 @@ import React, { useEffect, useState } from 'react'
 import './Homepage.css'
 import Card from '../../components/Cards/Card'
 import Loading from '../../components/Loading/Loading';
-
+import { useFunctions } from '../../components/Datacontext/DataProvder';
 import * as FaIcons from "react-icons/fa"
+import UserDropdown from './UserDropdown';
+import SortDropdown from './SortDropdown';
+//! group on bases of users kerna pjele
 
 
 const Homepage = () => {
   //state variables
-  const [display,setDisplay]=useState(false);
-  //function
-  const showDisplay=()=>setDisplay(!display);
-
-  const url = " https://api.quicksell.co/v1/internal/frontend-assignment ";
-
-  // array of objects
-  const [list,setList]=useState([]);
-  const [masterList,setmasterList]=useState([]);
-  const [loading,setLoading]=useState(true);
-  const [user,setUser]=useState([]);
-  const fetchItems=async()=>{
-      setLoading(true);
-    try{
-      const data=await fetch(url);
-      const res=await data.json();
+  const { finaldata, sorting,grouping,userIdtoName} = useFunctions();
+  const [display, setDisplay] = useState(true);
+  const showDisplay = () => setDisplay(!display);
+  const [isGroup, setGroup] = useState(false);
+  const [issort, setSort] = useState(false);
+  const url = "https://api.quicksell.co/v1/internal/frontend-assignment ";
+  const [list, setList] = useState([]);
+  const [masterList, setmasterList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState([]);
+  const fetchItems = async () => {
+    setLoading(true);
+    try {
+      const data = await fetch(url);
+      const res = await data.json();
       setUser(res.users);
-      console.log(res);
       setLoading(false);
       setList(res.tickets);
       setmasterList(res.tickets);
-      console.log(list);
-      console.log(masterList);
     }
-    catch(err){
+    catch (err) {
       setLoading(false);
       console.log(err);
     }
   }
-
-  const group=()=>{
-    setList(user);
-  }
-
-
-  useEffect(()=>{
+  useEffect(() => {
     fetchItems();
-  },[]);
-
-  if(loading){
-    return(
-      <Loading/>
+  }, []);
+  if (loading) {
+    return (
+      <Loading />
     )
   }
+  const object=["No priority","Urgent","High","Medium","Low"];
+  const sortingBases = (a, b) => (sorting == "priority" ? (a.priority - b.priority) : (a.title.localeCompare(b.title)))
   return (
     <>
-    <div className='full'>
-    <div className='nav'>
-      
-    
-  
-   <button  className ='btn' id='btn1' onClick={showDisplay}>Display <FaIcons.FaBars/></button>
-      <div className={display?'display-menu-active' :'display-menu'}>
-        <ul className='display-menu-items'>
-           <li>Grouping &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className ='btn' onClick={()=>group()}>Status</button></li>
-           <li>Ordering &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className ='btn'>Priority</button></li>
-        </ul>
-      </div>
-  
-   
+      <div className='full'>
+        <div className='nav'>
+          <button className='btn' id='btn1' onClick={showDisplay}>Display <FaIcons.FaBars /></button>
+          <div className="menu-sub-main">
+            <div className={display ? 'display-menu-active' : 'display-menu'}>
+              <ul className='display-menu-items'>
+                <li>Grouping &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' onClick={() => (setGroup(prev => !prev), setSort(false))}>Status</button></li>
+                <li>Ordering &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' onClick={() => (setSort(prev => !prev), setGroup(false))}>Priority</button></li>
+              </ul>
+            </div>
+            <div className='sub-menu'>
+              {!display && isGroup && <UserDropdown />}
+              {!display && issort && <SortDropdown />}
+            </div>
+          </div>
 
-    </div>
-    <div className='display'>
-          {list.map((list) => {
-            return <Card key={list.id} {...list} />;
-          })}
-    </div>
-    </div>
+
+        </div>
+        <div className='display' style={{ display: "flex" }}>
+          {
+            Object.keys(finaldata).map(key => (
+              <ul>
+                <li>{grouping==="priority"?object[key]:(grouping==="user")?userIdtoName[key]:key}</li>
+                {
+                  finaldata[key].sort((a, b) => sortingBases(a, b)).map((ele, index) => (
+                    <li>
+                      <Card {...ele} key={index} />
+                    </li>
+                  ))
+                }
+              </ul>
+
+            ))
+          }
+        </div>
+      </div>
     </>
   )
 }

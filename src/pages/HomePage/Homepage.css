@@ -39,8 +39,24 @@ ul{
     display: flex;
     align-items: center;
 }
+.menu-sub-main{
+    display: flex;
+}
+.sub-menu{
+    position:absolute;
+    top:90px;
+    left:280px;
+    /* width:500px; */
+    /* background-color:red; */
+}
 li{
     list-style: none;
+}
+.dropdown-main{
+    padding:10px;
+    background-color:whitesmoke;
+    border:2px solid grey;
+    border-radius: 10px;
 }
 .btn{
     height: 30px;

@@ -1,7 +1,7 @@
 import React from 'react'
 import './Card.css'
 import { FaUserTag } from 'react-icons/fa'
-const Card = ({id,title,tag}) => {
+const Card = ({id,title,tag,priority}) => {
    let t=title;
   //  if(t.length>70){
   //   t=title.substring(0,70)+"...";
@@ -10,7 +10,7 @@ const Card = ({id,title,tag}) => {
     <>
     <div className='card'>
         <div className='h5'>
-            <h5>{id}</h5>
+            <h5>{priority}</h5>
         </div>
         
         <div className='para'>
