@@ -5,13 +5,22 @@ import Loading from '../../components/Loading/Loading';
 import { useFunctions } from '../../components/Datacontext/DataProvder';
 import UserDropdown from './UserDropdown';
 import SortDropdown from './SortDropdown';
-import {FaAngleDown,FaRegListAlt} from "react-icons/fa";
+import { FaRegListAlt, FaAngleDown } from 'react-icons/fa';
+import { TbUrgent } from "react-icons/tb";
+import { FaSignal } from "react-icons/fa";
+import { BiDotsHorizontalRounded, BiSignal2, BiSignal4 } from "react-icons/bi";
+import { BsPersonCircle, BsCircle } from "react-icons/bs";
+import { ImCancelCircle } from "react-icons/im";
+import { RiRestTimeFill } from "react-icons/ri";
+import { IoMdDoneAll } from "react-icons/io";
+import { GiProgression } from "react-icons/gi";
+// import * from 
 //! group on bases of users kerna pjele
 
 
 const Homepage = () => {
   //state variables
-  const { finaldata, sorting,grouping,userIdtoName} = useFunctions();
+  const { finaldata, sorting, grouping, userIdtoName } = useFunctions();
   const [display, setDisplay] = useState(true);
   const showDisplay = () => setDisplay(!display);
   const [isGroup, setGroup] = useState(false);
@@ -44,18 +53,28 @@ const Homepage = () => {
       <Loading />
     )
   }
-  const object=["No priority","Urgent","High","Medium","Low"];
+  const object = ["No priority", "Urgent", "High", "Medium", "Low"];
+  const logos = [<BiDotsHorizontalRounded size={20} />, <TbUrgent size={20} />, <FaSignal size={20} />, <BiSignal4 size={20} />, <BiSignal2 size={20} />];
+  console.log(userIdtoName)
+  // const type=[<BsCircle/>,<GiProgression/>,<IoMdDoneAll/>,<RiRestTimeFill/>,<ImCancelCircle/>];
+  const type = {
+    Todo: <BsCircle />,
+    "In progress": <GiProgression />,
+    Done: <IoMdDoneAll />,
+    Backlog: <RiRestTimeFill />,
+    Canceled: <ImCancelCircle />
+  }
   const sortingBases = (a, b) => (sorting === "priority" ? (a.priority - b.priority) : (a.title.localeCompare(b.title)))
   return (
     <>
       <div className='full'>
         <div className='nav'>
-          <button className='btn' id='btn1' onClick={showDisplay}><FaRegListAlt id='icon'/>&nbsp;Display <FaAngleDown id='icon'/> </button>
+          <button className='btn' id='btn1' onClick={showDisplay}><FaRegListAlt id='icon' />&nbsp;Display <FaAngleDown id='icon' /> </button>
           <div className="menu-sub-main">
             <div className={display ? 'display-menu-active' : 'display-menu'}>
               <ul className='display-menu-items'>
-                <li>Grouping &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' id='btn2' onClick={() => (setGroup(prev => !prev), setSort(false))}>Status <FaAngleDown/></button></li>
-                <li>Ordering &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' id='btn2' onClick={() => (setSort(prev => !prev), setGroup(false))}>Priority <FaAngleDown/></button></li>
+                <li>Grouping &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' id='btn2' onClick={() => (setGroup(prev => !prev), setSort(false))}>Status <FaAngleDown /></button></li>
+                <li>Ordering &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' id='btn2' onClick={() => (setSort(prev => !prev), setGroup(false))}>Priority <FaAngleDown /></button></li>
               </ul>
             </div>
             <div className='sub-menu'>
@@ -70,10 +89,13 @@ const Homepage = () => {
           {
             Object.keys(finaldata).map(key => (
               <ul>
-                <li className='prior'>{grouping==="priority"?object[key]:(grouping==="user")?userIdtoName[key]:key} <span className='small'>+</span><span className='add'>...</span></li>
+                <li className='prior'>
+                  {grouping === "priority" ? (logos[key]) : (grouping === "user" ? <BsPersonCircle /> : type[key])}
+                  {grouping === "priority" ? object[key] : (grouping === "user") ? userIdtoName[key] : key} <span className='small'>+</span><span className='add'>...</span></li>
                 {
                   finaldata[key].sort((a, b) => sortingBases(a, b)).map((ele, index) => (
                     <li>
+
                       <Card {...ele} key={index} />
                     </li>
                   ))

@@ -44,7 +44,11 @@ function DataProvder({ children }) {
         return arrangedTickets;
     }
     function groupTicketsByStatus(tickets) {
+        const status=["Backlog","Todo","In progress","Done","Canceled"]
         const groupedTickets = {};
+        status.forEach((status) => {
+            groupedTickets[status] = [];
+          });
         tickets.forEach((ticket) => {
             const status = ticket.status;
             if (!groupedTickets[status]) {
@@ -52,7 +56,7 @@ function DataProvder({ children }) {
             }
             groupedTickets[status].push(ticket);
         });
-
+        
         return groupedTickets;
     }
     const GroupByBases = (tickets, user) => {
@@ -79,7 +83,7 @@ function DataProvder({ children }) {
             const result = await axios.get("https://api.quicksell.co/v1/internal/frontend-assignment");
             const ticket = result.data.tickets;
             const users = result.data.users;
-            // console.log(result.data)
+            console.log(result.data)
             setTicketData(ticket);
             setUserData(users);
             GroupByBases(ticket, users);
