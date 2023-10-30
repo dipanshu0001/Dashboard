@@ -70,7 +70,7 @@ const Homepage = () => {
           {
             Object.keys(finaldata).map(key => (
               <ul>
-                <li className='prior'>{grouping==="priority"?object[key]:(grouping==="user")?userIdtoName[key]:key}</li>
+                <li className='prior'>{grouping==="priority"?object[key]:(grouping==="user")?userIdtoName[key]:key} <span className='small'>+</span><span className='add'>...</span></li>
                 {
                   finaldata[key].sort((a, b) => sortingBases(a, b)).map((ele, index) => (
                     <li>

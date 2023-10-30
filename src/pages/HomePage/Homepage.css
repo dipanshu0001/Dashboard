@@ -48,8 +48,6 @@ ul{
     position:absolute;
     top:90px;
     left:280px;
-    /* width:500px; */
-    /* background-color:red; */
 }
 li{
     list-style: none;
@@ -59,6 +57,7 @@ li{
     background-color:whitesmoke;
     box-shadow: 0 0 10px rgb(0,0,0,0.4);
     border-radius: 10px;
+    font-size: medium;
 }
 .btn{
     height: 30px;
@@ -79,6 +78,8 @@ li{
 }
 #btn2{
     width: 80px;
+    font-size: medium;
+   padding-bottom: 6px;
 }
 .prior{
     margin-left: 30px;
@@ -87,4 +88,15 @@ li{
 
 .full{
     background-color:whitesmoke;
+}
+
+.small{
+    margin-left: 35%;
+    color: gray;
+}
+.add{
+    margin-left: 5%;
+    padding-bottom: 40%;
+    padding-bottom:0vmax;
+    color: gray;
 }
