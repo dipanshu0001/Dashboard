@@ -73,22 +73,7 @@ function DataProvder({ children }) {
         }
 
     }
-    // const sortByPriority = (object) => {
-    //     for (const key in object) {
-    //         if (object.hasOwnProperty(key)) {
-    //             object[key].sort((a, b) => a.priority - b.priority);
-    //         }
-    //     }
-    //     console.log(object)
-    //       return object;
-    // }
-
-    // const sortByTitle = (tickets) => {
-    //     for (const key in  tickets) {
-    //         tickets[key].sort((a, b) => a.title.localeCompare(b.title));
-    //     }
-    //     return tickets;
-    // }
+   
     const getData = async () => {
         try {
             const result = await axios.get("https://api.quicksell.co/v1/internal/frontend-assignment");
@@ -126,4 +111,4 @@ function DataProvder({ children }) {
     )
 }
 export const useFunctions = () => useContext(DataContext);
-export default DataProvder
+export default DataProvder;

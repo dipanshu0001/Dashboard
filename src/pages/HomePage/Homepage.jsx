@@ -3,9 +3,9 @@ import './Homepage.css'
 import Card from '../../components/Cards/Card'
 import Loading from '../../components/Loading/Loading';
 import { useFunctions } from '../../components/Datacontext/DataProvder';
-import * as FaIcons from "react-icons/fa"
 import UserDropdown from './UserDropdown';
 import SortDropdown from './SortDropdown';
+import {FaAngleDown,FaRegListAlt} from "react-icons/fa";
 //! group on bases of users kerna pjele
 
 
@@ -16,7 +16,7 @@ const Homepage = () => {
   const showDisplay = () => setDisplay(!display);
   const [isGroup, setGroup] = useState(false);
   const [issort, setSort] = useState(false);
-  const url = "https://api.quicksell.co/v1/internal/frontend-assignment ";
+  const url = "https://api.quicksell.co/v1/internal/frontend-assignment";
   const [list, setList] = useState([]);
   const [masterList, setmasterList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,17 +45,17 @@ const Homepage = () => {
     )
   }
   const object=["No priority","Urgent","High","Medium","Low"];
-  const sortingBases = (a, b) => (sorting == "priority" ? (a.priority - b.priority) : (a.title.localeCompare(b.title)))
+  const sortingBases = (a, b) => (sorting === "priority" ? (a.priority - b.priority) : (a.title.localeCompare(b.title)))
   return (
     <>
       <div className='full'>
         <div className='nav'>
-          <button className='btn' id='btn1' onClick={showDisplay}>Display <FaIcons.FaBars /></button>
+          <button className='btn' id='btn1' onClick={showDisplay}><FaRegListAlt id='icon'/>&nbsp;Display <FaAngleDown id='icon'/> </button>
           <div className="menu-sub-main">
             <div className={display ? 'display-menu-active' : 'display-menu'}>
               <ul className='display-menu-items'>
-                <li>Grouping &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' onClick={() => (setGroup(prev => !prev), setSort(false))}>Status</button></li>
-                <li>Ordering &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' onClick={() => (setSort(prev => !prev), setGroup(false))}>Priority</button></li>
+                <li>Grouping &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' id='btn2' onClick={() => (setGroup(prev => !prev), setSort(false))}>Status <FaAngleDown/></button></li>
+                <li>Ordering &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className='btn' id='btn2' onClick={() => (setSort(prev => !prev), setGroup(false))}>Priority <FaAngleDown/></button></li>
               </ul>
             </div>
             <div className='sub-menu'>
@@ -70,7 +70,7 @@ const Homepage = () => {
           {
             Object.keys(finaldata).map(key => (
               <ul>
-                <li>{grouping==="priority"?object[key]:(grouping==="user")?userIdtoName[key]:key}</li>
+                <li className='prior'>{grouping==="priority"?object[key]:(grouping==="user")?userIdtoName[key]:key} <span className='small'>+</span><span className='add'>...</span></li>
                 {
                   finaldata[key].sort((a, b) => sortingBases(a, b)).map((ele, index) => (
                     <li>
